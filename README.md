@@ -6,7 +6,10 @@ While actively applying to dozens of positions across multiple platforms and cor
 To solve this, I built a lightweight, self-hosted dashboard that connects directly to my personal Google account via Google APIs. It automatically scans incoming emails for status changes (rejections, test invitations, interview rounds) and updates a local database so I can monitor all my application metrics in one clean view[cite: 1, 2, 4].
 
 ---
+### Dashboard Preview
+*Here is how the dashboard looks in action:*
 
+![Job application tracking dashboard showing application metrics, status filters, and a table of job applications in a clean, organized web interface]("C:\Users\AMAN\Documents\Projects\Job-Tracking-Dashboard\public\dashboard-preview.png")
 ## Tech Stack & Architecture
 
 - **Frontend**: Vanilla HTML5, CSS3, and JavaScript (fetch API, responsive UI, dynamic metric filtering)[cite: 1, 2, 4].
