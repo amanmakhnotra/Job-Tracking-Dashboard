@@ -9,7 +9,7 @@ To solve this, I built a lightweight, self-hosted dashboard that connects direct
 ### Dashboard Preview
 *Here is how the dashboard looks in action:*
 
-![Job Application Dashboard Preview](public/dashboard-preview.png)
+![Job Application Dashboard Preview](public/dashboard-preview1.png)
 ## Tech Stack & Architecture
 
 - **Frontend**: Vanilla HTML5, CSS3, and JavaScript (fetch API, responsive UI, dynamic metric filtering)[cite: 1, 2, 4].
