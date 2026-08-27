@@ -7,7 +7,7 @@ To solve this, I built a lightweight, self-hosted dashboard that connects direct
 
 ---
 ### Dashboard Preview
-*Here is how the dashboard looks in action:*
+*Here is how the dashboard looks in action:(company names are hidden)*
 
 ![Job Application Dashboard Preview](public/dashboard-preview1.png)
 ## Tech Stack & Architecture
