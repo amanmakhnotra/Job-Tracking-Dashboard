@@ -1,0 +1,21 @@
+# Sensitive Environment & Credentials
+.env
+*.json
+!data/applications.json
+
+# Local SQLite Database & Storage
+data/dashboard.db
+*.db
+*.sqlite3
+
+# Python Cache & Virtual Environments
+__pycache__/
+*.pyc
+venv/
+.venv/
+env/
+
+# IDE & OS Files
+.vscode/
+.idea/
+.DS_Store

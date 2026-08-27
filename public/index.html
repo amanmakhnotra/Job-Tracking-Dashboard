@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Job Application Dashboard</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #121212; color: #e0e0e0; margin: 0; padding: 35px; }
+    .container { max-width: 950px; margin: 0 auto; }
+    .metrics { display: flex; gap: 40px; margin-bottom: 25px; }
+    .metric-box h3 { font-size: 14px; color: #888; margin: 0 0 5px 0; font-weight: 400; }
+    .metric-box .num { font-size: 28px; font-weight: bold; }
+    .num.total { color: #fff; } .num.pending { color: #4fa3d1; } .num.assessment { color: #e5c07b; } .num.rejected { color: #e06c75; }
+    .controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .filters button { background: #222; border: 1px solid #333; color: #ccc; padding: 6px 14px; border-radius: 6px; cursor: pointer; margin-right: 6px; }
+    .filters button.active { background: #333; color: #fff; border-color: #555; }
+    .btn-refresh { background: #1a1a1a; border: 1px solid #444; color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid #222; }
+    th { color: #777; font-weight: 500; font-size: 14px; }
+    .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; display: inline-block; }
+    .badge.pending { background: #1c2d3d; color: #4fa3d1; }
+    .badge.assessment { background: #3d321c; color: #e5c07b; }
+    .badge.rejected { background: #3d1c1c; color: #e06c75; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="metrics">
+      <div class="metric-box"><h3>Total</h3><div class="num total" id="m-total">0</div></div>
+      <div class="metric-box"><h3>Not replied</h3><div class="num pending" id="m-pending">0</div></div>
+      <div class="metric-box"><h3>Assessment stage</h3><div class="num assessment" id="m-assessment">0</div></div>
+      <div class="metric-box"><h3>Not selected</h3><div class="num rejected" id="m-rejected">0</div></div>
+    </div>
+
+    <div class="controls">
+      <div class="filters">
+        <button class="active" onclick="filterData('all', this)">All</button>
+        <button onclick="filterData('pending', this)">Not replied</button>
+        <button onclick="filterData('assessment', this)">Assessment</button>
+        <button onclick="filterData('rejected', this)">Rejected</button>
+      </div>
+      <button class="btn-refresh" onclick="triggerRefresh()">↻ Refresh</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Company</th><th>Role</th><th>Applied</th><th>Status</th></tr>
+      </thead>
+      <tbody id="app-rows"></tbody>
+    </table>
+  </div>
+
+  <script>
+    let allApps = [];
+    async function loadState() {
+      const res = await fetch('/api/state');
+      const data = await res.json();
+      allApps = data.applications || [];
+      render();
+    }
+    function render(filter = 'all') {
+      const tbody = document.getElementById('app-rows');
+      tbody.innerHTML = '';
+      let pending = 0, assessment = 0, rejected = 0;
+      
+      allApps.forEach(a => {
+        if (a.status === 'pending') pending++;
+        if (a.status === 'assessment') assessment++;
+        if (a.status === 'rejected') rejected++;
+        
+        if (filter !== 'all' && a.status !== filter) return;
+        
+        const tr = document.createElement('tr');
+        const statusLabel = a.status === 'pending' ? 'Not replied' : (a.status === 'assessment' ? 'Assessment' : 'Rejected');
+        tr.innerHTML = `
+          <td><strong>${a.company}</strong></td>
+          <td>${a.role}</td>
+          <td>${a.applied}</td>
+          <td><span class="badge ${a.status}">${statusLabel}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('m-total').innerText = allApps.length;
+      document.getElementById('m-pending').innerText = pending;
+      document.getElementById('m-assessment').innerText = assessment;
+      document.getElementById('m-rejected').innerText = rejected;
+    }
+    function filterData(status, btn) {
+      document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      render(status);
+    }
+    async function triggerRefresh() {
+      const btn = document.querySelector('.btn-refresh');
+      btn.innerText = 'Refreshing...';
+      const res = await fetch('/api/refresh', { method: 'POST' });
+      const data = await res.json();
+      if (data.applications) {
+        allApps = data.applications;
+        render();
+      }
+      btn.innerText = '↻ Refresh';
+    }
+    loadState();
+  </script>
+</body>
+</html>
