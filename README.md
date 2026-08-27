@@ -9,7 +9,7 @@ To solve this, I built a lightweight, self-hosted dashboard that connects direct
 ### Dashboard Preview
 *Here is how the dashboard looks in action:*
 
-![Job application tracking dashboard showing application metrics, status filters, and a table of job applications in a clean, organized web interface]("C:\Users\AMAN\Documents\Projects\Job-Tracking-Dashboard\public\dashboard-preview.png")
+![Job Application Dashboard Preview](public/dashboard-preview.png)
 ## Tech Stack & Architecture
 
 - **Frontend**: Vanilla HTML5, CSS3, and JavaScript (fetch API, responsive UI, dynamic metric filtering)[cite: 1, 2, 4].
